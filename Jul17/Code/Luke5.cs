@@ -9,28 +9,26 @@ namespace Code
     /// </summary>
     public class Luke5
     {
-        public Rekke Generer(int antall)
+        public Rekke Generer(long antall)
         {
-            var rekken = new int[antall];
-            var gjeldende = 1;
+            var rekken = new long[antall];
+            long gjeldende = 1;
             var sisteAntall = 0;
-            var målsetning = 1;
+            long målsetning = 1;
 
-            for (int i = 1; i <= antall; i++)
+            for (var i = 1; i <= antall; i++)
             {
                 rekken[i - 1] = gjeldende;
 
                 if (sisteAntall < gjeldende)
-                {
                     sisteAntall++;
-                }
 
                 if (sisteAntall == målsetning)
                 {
                     gjeldende++;
                     sisteAntall = 0;
 
-                    målsetning = i == 1 ? 2 : rekken[i - 1];
+                    målsetning = i == 1 ? 2 : rekken[gjeldende - 1];
                 }
             }
             return new Rekke(rekken);
@@ -39,13 +37,12 @@ namespace Code
 
     public class Rekke
     {
-        public int[] Tallene;
-        public int Sum => Tallene.Sum();
+        public readonly long[] Tallene;
+        public long Sum => Tallene.Sum();
 
-        public Rekke(int[] tallene)
+        public Rekke(long[] tallene)
         {
             Tallene = tallene;
-
         }
 
         public void Print()
@@ -82,6 +79,14 @@ namespace Code
             r.Print();
             Assert.AreEqual(15, r.Sum, "Sum");
             Assert.That(r.Tallene, Is.EquivalentTo(new[] { 1, 2, 2, 3, 3, 4 }), "Tallene");
+        }
+
+        [Test]
+        public void PosisjonAngirAntall15()
+        {
+            var r = new Luke5().Generer(15);
+            r.Print();           
+            Assert.That(r.Tallene, Is.EquivalentTo(new[] { 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6 }), "Tallene");
         }
 
         [Test]
