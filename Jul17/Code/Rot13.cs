@@ -8,7 +8,8 @@ namespace Code
 {
     public class Rot13
     {
-        
+        public static Func<char, int> AsciiPlussPosisjon = (x) => (int)x + (int)x - 64;
+
         public string Dekod(string kodet, Func<char, int> rootFunc)
         {
             Dictionary<char, char> oversettelser = new Dictionary<char, char>();
@@ -23,17 +24,24 @@ namespace Code
             return new string(kodet.ToCharArray().Select(x => oversettelser[x]).ToArray());
         }
 
-        public static char Krypter(Func<char, int> rootFunc, int i, char c)
+        public static char Krypter(Func<char, int> shiftFunc, int i, char c)
         {
-            var flyttet = i - 64 + rootFunc(c);
-            var justert = flyttet % (90 - 64) + 64;
+            var ny = (i - 64 + shiftFunc(c)) % 26;           
+            var justert = 64 + ny;
             return (char)justert;
         }
     }
 
     [TestFixture]
     public class Rot13Tests
-    {       
+    {
+        [Test]
+        public void Krypter()
+        {
+            var kryptert = Rot13.Krypter(Rot13.AsciiPlussPosisjon, (int)'L', 'L');
+            Assert.AreEqual('V', kryptert);
+        }
+
         [TestCase("N", "A")]
         [TestCase("O", "B")]
         [TestCase("P", "C")]
@@ -74,31 +82,26 @@ namespace Code
         {
             var dekoder = new Rot13();
 
-            Assert.AreEqual(forventet, dekoder.Dekod(input, x => (int)x + 66 - (int)x));
+            Assert.AreEqual(forventet, dekoder.Dekod(input, Rot13.AsciiPlussPosisjon));
         }
 
-        [Test]
-        public void RotFunksjon()
-        {
-            Func<char, int> f = (x) => (int) x + 66 - (int) x;
-
-            var resultat = f('A');
-            Assert.AreEqual(65 + 1, resultat);
+        [TestCase('A', 66)]
+        [TestCase('B', 68)]
+        [TestCase('Z', 90 + 26)]
+        public void AsciiPlussPosisjon(char input, int forventet)
+        {            
+            var resultat = Rot13.AsciiPlussPosisjon(input);
+            Assert.AreEqual(forventet, resultat);
         }
 
-        [Test]
-        public void Krypter()
-        {          
-            var kryptert = Rot13.Krypter(x => (int) x + 66 - (int) x, (int) 'L', 'L');
-            Assert.AreEqual('V', kryptert);
-        }
+      
 
         [Test]
         public void DekodEksempel()
         {
             var dekoder = new Rot13();
 
-            var dekodet = dekoder.Dekod("PWVAYOBB", x => (int)x + 66 - (int)x);
+            var dekodet = dekoder.Dekod("PWVAYOBB", Rot13.AsciiPlussPosisjon);
 
             Assert.AreEqual("JULEMANN", dekodet);
         }
@@ -108,7 +111,7 @@ namespace Code
         {
             var dekoder = new Rot13();
 
-            var dekodet = dekoder.Dekod("OTUJNMQTYOQOVVNEOXQVAOXJEYA", x => (int)x + 66 - (int)x);
+            var dekodet = dekoder.Dekod("OTUJNMQTYOQOVVNEOXQVAOXJEYA", Rot13.AsciiPlussPosisjon);
             Console.WriteLine(dekodet);
         }
     }
