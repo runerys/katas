@@ -4,7 +4,10 @@ using NUnit.Framework;
 
 namespace Code
 {
-    public class SubstituteCipher
+    /// <summary>
+    /// https://julekalender.knowit.no/challenges/cjatouw266ynt0103dxxo04jy
+    /// </summary>
+    public class KryptoKluss
     {
         private const int AntallBokstaver = 'Z' - 'A' + 1;
         private const int Offset = 'Z' - AntallBokstaver;
@@ -29,37 +32,25 @@ namespace Code
     public class Rot13Tests
     {
         [Test]
-        public void Krypter()
+        public void KrypterMedAsciiPlussPosisjon()
         {
-            var kryptert = SubstituteCipher.Krypter('L', SubstituteCipher.AsciiPlussPosisjon);
+            var kryptert = KryptoKluss.Krypter('L', KryptoKluss.AsciiPlussPosisjon);
             Assert.AreEqual((int)'V', kryptert);
-        }
-
-        [TestCase("N", "A")]
-        [TestCase("O", "B")]
-        [TestCase("P", "C")]
-        [TestCase("J", "W")]
-        [TestCase("M", "Z")]
-        public void Spesifikasjon(string input, string forventet)
-        {
-            var dekoder = new SubstituteCipher();
-
-            Assert.AreEqual(forventet, dekoder.Dekod(input, x => 13));
-        }
+        }       
 
         [TestCase("B", "A")]
         [TestCase("A", "Z")]
-        public void Spesifikasjon2(string input, string forventet)
+        public void ShiftMed1(string input, string forventet)
         {
-            var dekoder = new SubstituteCipher();
+            var dekoder = new KryptoKluss();
 
             Assert.AreEqual(forventet, dekoder.Dekod(input, x => 1));
         }
 
         [TestCase("E", "A")]
-        public void Spesifikasjon30(string input, string forventet)
+        public void ShiftMed30(string input, string forventet)
         {
-            var dekoder = new SubstituteCipher();
+            var dekoder = new KryptoKluss();
 
             Assert.AreEqual(forventet, dekoder.Dekod(input, x => 30));
         }
@@ -71,11 +62,11 @@ namespace Code
         [TestCase("Y", "M")]
         [TestCase("O", "A")]
         [TestCase("B", "N")]
-        public void SpesifikasjonEksepmel(string input, string forventet)
+        public void SpesifikasjonEksempel(string input, string forventet)
         {
-            var dekoder = new SubstituteCipher();
+            var dekoder = new KryptoKluss();
 
-            Assert.AreEqual(forventet, dekoder.Dekod(input, SubstituteCipher.AsciiPlussPosisjon));
+            Assert.AreEqual(forventet, dekoder.Dekod(input, KryptoKluss.AsciiPlussPosisjon));
         }
 
         [TestCase('A', 66)]
@@ -83,16 +74,16 @@ namespace Code
         [TestCase('Z', 90 + 26)]
         public void AsciiPlussPosisjon(char input, int forventet)
         {
-            var resultat = SubstituteCipher.AsciiPlussPosisjon(input);
+            var resultat = KryptoKluss.AsciiPlussPosisjon(input);
             Assert.AreEqual(forventet, resultat);
         }
 
         [Test]
         public void DekodEksempel()
         {
-            var dekoder = new SubstituteCipher();
+            var dekoder = new KryptoKluss();
 
-            var dekodet = dekoder.Dekod("PWVAYOBB", SubstituteCipher.AsciiPlussPosisjon);
+            var dekodet = dekoder.Dekod("PWVAYOBB", KryptoKluss.AsciiPlussPosisjon);
 
             Assert.AreEqual("JULEMANN", dekodet);
         }
@@ -100,9 +91,9 @@ namespace Code
         [Test]
         public void DekodKonkurranse()
         {
-            var dekoder = new SubstituteCipher();
+            var dekoder = new KryptoKluss();
 
-            var dekodet = dekoder.Dekod("OTUJNMQTYOQOVVNEOXQVAOXJEYA", SubstituteCipher.AsciiPlussPosisjon);
+            var dekodet = dekoder.Dekod("OTUJNMQTYOQOVVNEOXQVAOXJEYA", KryptoKluss.AsciiPlussPosisjon);
             Console.WriteLine(dekodet);
         }
     }
