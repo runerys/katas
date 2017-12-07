@@ -19,7 +19,9 @@ namespace Code
                                    .Select(orig => new { Key = Krypter(orig, shiftFunksjon), Value = orig })
                                    .ToDictionary(v => (char)v.Key, v => (char)v.Value);
                 
-            return new string(kodet.ToCharArray().Select(x => enigma[x]).ToArray());
+            return new string(kodet.ToCharArray()
+                                   .Select(x => enigma[x])
+                                   .ToArray());
         }
 
         public static int Krypter(int bokstav, Func<int, int> shiftFunksjon)
