@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Luke5.cs" />
+    <Compile Include="Luke8_Juletall.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KryptoKluss.cs" />
   </ItemGroup>
