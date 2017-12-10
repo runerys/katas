@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Luke10_Akevitten.cs" />
     <Compile Include="Luke5.cs" />
     <Compile Include="Luke8_Juletall.cs" />
     <Compile Include="Luke9_SnilleBarn.cs" />
