@@ -17,7 +17,7 @@ namespace Code
             var juleTallHistory = new HashSet<long>();
             var juletall = new List<long>();
 
-            for (var i = 0L; i < Int64.MaxValue; i++)
+            for (var i = 0L; i < 10000001; i++)
             {
                 var resultat = ErJuleTall(i, new HashSet<long>(), juleTallHistory);
 
@@ -34,7 +34,7 @@ namespace Code
             //        .ToArray();
         }
 
-        public bool? ErJuleTall(long tall, HashSet<long> history, HashSet<long> juletallHistory)
+        public bool? ErJuleTall(long tall, HashSet<long> sequence, HashSet<long> juletallHistory)
         {
             if (juletallHistory.Contains(tall))
                 return true; 
@@ -47,16 +47,16 @@ namespace Code
             if (squareSum > 10000000)
                 return null; // no element should be bigger
 
-            if (history.Contains(squareSum))
+            if (sequence.Contains(squareSum))
                 return false; // break loop
 
-            history.Add(squareSum);
+            sequence.Add(squareSum);
 
             if (squareSum == 1)
             {
                 juletallHistory.Add(tall);
 
-                foreach (var x in history)
+                foreach (var x in sequence)
                 {
                     juletallHistory.Add(x);
                 }
@@ -67,7 +67,7 @@ namespace Code
             if (juletallHistory.Contains(squareSum))
                 return true;
 
-            return ErJuleTall(squareSum, history, juletallHistory);            
+            return ErJuleTall(squareSum, sequence, juletallHistory);            
         }      
 
         private static IEnumerable<long> GetDigits(long source)
@@ -80,11 +80,11 @@ namespace Code
             }
         }
 
-        private static IEnumerable<long> Range(long start, long count)
-        {
-            for (long current = 0; current < count; ++current)
-                yield return start + current;
-        }
+        //private static IEnumerable<long> Range(long start, long count)
+        //{
+        //    for (long current = 0; current < count; ++current)
+        //        yield return start + current;
+        //}
     }
 
 
